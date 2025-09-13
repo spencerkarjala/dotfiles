@@ -3,6 +3,7 @@
 import sys
 from pathlib import Path
 import os
+import subprocess
 from typing import List
 
 def install_scripts():
@@ -35,7 +36,7 @@ def install_aider_main_config():
     aider_config_file = xdg_config_home / 'aider' / '.aider.conf.yaml'
     aider_config_file.parent.mkdir(parents=True, exist_ok=True)
 
-    source_config_file = Path('aider/config.yaml')
+    source_config_file = Path.cwd() / 'aider' / 'config.yaml'
 
     if aider_config_file.is_file():
         aider_config_file.unlink()
@@ -66,7 +67,7 @@ def install_aider_conventions():
     aider_config_dir = xdg_config_dir / 'aider'
     aider_config_dir.mkdir(parents=True, exist_ok=True)
 
-    conventions_file = Path('aider/conventions')
+    conventions_file = Path.cwd() / 'aider' / 'conventions'
     conventions_link_path = aider_config_dir / 'aider-conventions.txt'
 
     if conventions_link_path.is_symlink():
@@ -78,6 +79,16 @@ def install_aider_conventions():
 
     print("...done.")
 
+def setup_dolphin():
+    print("Setting up Dolphin automation...")
+
+    dolphin_dir = Path.cwd() / 'applications' / 'dolphin'
+    setup_script = dolphin_dir / 'setup.sh'
+
+    subprocess.run(['bash', str(setup_script)], cwd=dolphin_dir)
+
+    print("...done.")
+
 def install_aider_configs():
     install_aider_conventions()
     install_aider_main_config()
@@ -85,6 +96,7 @@ def install_aider_configs():
 target_map = {
     'scripts': install_scripts,
     'aider-config': install_aider_configs,
+    'dolphin': setup_dolphin,
 }
 
 def install_targets(targets: List[str]) -> None:
