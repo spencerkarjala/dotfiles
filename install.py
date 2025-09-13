@@ -1,11 +1,29 @@
 #!/usr/bin/env python3
 
 import sys
+from pathlib import Path
 from typing import List
 
 def install_scripts():
     print("Installing all scripts...")
-    # Placeholder for scripts installation logic
+
+    install_dir = Path.home() / '.local' / 'bin'
+    scripts_dir = Path.cwd() / 'scripts'
+
+    install_dir.mkdir(parents=True, exist_ok=True)
+
+    source_scripts = [filename for filename in scripts_dir.iterdir() if filename.is_file()]
+
+    for script in source_scripts:
+        script_name_no_extension = script.stem
+        script_link_path = install_dir / script_name_no_extension
+
+        if script_link_path.is_symlink():
+            script_link_path.unlink()
+
+        script_link_path.symlink_to(script)
+
+        print(f"Created symlink at {script_link_path} to script {script.name}")
 
 target_map = {
     'scripts': install_scripts,
