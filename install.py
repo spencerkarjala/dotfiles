@@ -84,7 +84,7 @@ def install_aider_configs():
 
 target_map = {
     'scripts': install_scripts,
-    'aider': install_aider_configs,
+    'aider-config': install_aider_configs,
 }
 
 def install_targets(targets: List[str]) -> None:
@@ -98,12 +98,19 @@ def install_all():
     print("Installing all components...")
     install_targets(target_map.keys())
 
+def list_targets():
+    print("Available targets:")
+    for target in target_map.keys():
+        print(f" - {target}")
+
 def main():
     if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
-        print("Usage: ./install.py <all|target1 target2 ...>")
+        print("Usage: ./install.py <all|list-targets|target1 target2 ...>")
         sys.exit(1)
 
-    if sys.argv[1] == 'all':
+    if sys.argv[1] == 'list-targets':
+        list_targets()
+    elif sys.argv[1] == 'all':
         install_all()
     else:
         install_targets(sys.argv[1:])
