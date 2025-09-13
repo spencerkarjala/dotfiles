@@ -28,9 +28,16 @@ Default is **V=1** (concise). Set **V=0–4** per request.
 - Headers: keep comments minimal/idiomatic; prefer self-explanatory code.
 
 ## Python
-- Type-hint everything; prefer `pytest`.
-- Prefer `@mock.patch` over `MagicMock` where practical.
-- Formatters/linters are welcome but minimal config; keep comments lean.
+- Always prefer to use modern Python 3 patterns over classic ones:
+    - `Pathlib` instead of `os.path`
+    - f-strings instead of `%` formatting or `str.format()`
+    - dataclasses instead of manual class definitions
+    - Enumerations with `enum.Enum`
+    - Type hinting for all function arguments and return values
+    - Use context managers with `with` statements
+    - Prefer list comprehensions and generators instead of looping
+    - Use `asyncio` for asynchronous programming using `async` and `await`
+    - Use `functools` for higher-order functions; eg. `lru_cache` and `partial`
 
 ## Testing
 - Provide fast, deterministic tests (smoke/unit) alongside changes.
