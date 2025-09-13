@@ -2,6 +2,7 @@
 
 import sys
 from pathlib import Path
+import os
 from typing import List
 
 def install_scripts():
@@ -25,9 +26,65 @@ def install_scripts():
 
         print(f"Created symlink at {script_link_path} to script {script.name}")
 
+    print("...done.")
+
+def install_aider_main_config():
+    print("Installing aider main config...")
+
+    xdg_config_home = Path(os.getenv('XDG_CONFIG_HOME', Path.home() / '.config'))
+    aider_config_file = xdg_config_home / 'aider' / '.aider.conf.yaml'
+    aider_config_file.parent.mkdir(parents=True, exist_ok=True)
+
+    source_config_file = Path('aider/config.yaml')
+
+    if aider_config_file.is_file():
+        aider_config_file.unlink()
+
+    aider_config_file.write_text(source_config_file.read_text())
+    aider_config_file.chmod(0o600)
+
+    openai_api_key = input("Please enter your OpenAI API key: ")
+
+    with aider_config_file.open('r+') as file:
+        lines = file.readlines()
+        file.seek(0)
+        for line in lines:
+            if line.startswith('openai-api-key:'):
+                file.write(f'openai-api-key: {openai_api_key}\n')
+            else:
+                file.write(line)
+        file.truncate()
+
+    aider_config_file.chmod(0o400)
+
+    print("...done.")
+
+def install_aider_conventions():
+    print("Installing aider conventions...")
+
+    xdg_config_dir = Path(os.getenv('XDG_CONFIG_DIR', Path.home() / '.config'))
+    aider_config_dir = xdg_config_dir / 'aider'
+    aider_config_dir.mkdir(parents=True, exist_ok=True)
+
+    conventions_file = Path('aider/conventions')
+    conventions_link_path = aider_config_dir / 'aider-conventions.txt'
+
+    if conventions_link_path.is_symlink():
+        conventions_link_path.unlink()
+
+    conventions_link_path.symlink_to(conventions_file)
+
+    print(f"Created symlink at {conventions_link_path} to conventions file {conventions_file}")
+
+    print("...done.")
+
+def install_aider_configs():
+    install_aider_conventions()
+    install_aider_main_config()
+
 target_map = {
     'scripts': install_scripts,
-    # Add more targets and their corresponding functions here
+    'aider': install_aider_configs,
 }
 
 def install_targets(targets: List[str]) -> None:

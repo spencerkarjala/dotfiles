@@ -1,0 +1,10 @@
+openai-api-key: 
+chat-history-file: /home/skarjala/.config/aider/state/chat.history.md
+input-history-file: /home/skarjala/.config/aider/state/input.history
+llm-history-file: /home/skarjala/.config/aider/state/llm.history.jsonl
+model-settings-file: /home/skarjala/.config/aider/state/.aider.model.settings.yml
+model-metadata-file: /home/skarjala/.config/aider/state/.aider.model.metadata.json
+auto-commits: false
+dirty-commits: false
+read: ~/.config/aider/aider-conventions.txt
+

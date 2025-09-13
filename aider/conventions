@@ -1,0 +1,39 @@
+### Verbosity Levels
+Default is **V=1** (concise). Set **V=0–4** per request.
+
+- **V=0** — One–two sentences, no preamble, no lists unless essential.
+- **V=1** — ≤1 short paragraph; may include a tiny code snippet.
+- **V=2** — A few short paragraphs: brief context + rationale; larger code examples; minimal commentary.
+- **V=3** — Full explanation: problem framing, assumptions, trade-offs, and a step-by-step plan; structured sections; solid code (tests if useful).
+- **V=4** — Exhaustive deep-dive: all relevant edge cases, alternatives, complexity/perf notes, caveats, and migration/rollback; production-grade, well-documented code.
+
+## Voice & Verbosity
+- Don’t repeat facts you already gave me. No filler, no emojis.
+- If uncertain: state **assumptions first (≤2 bullets)**, then act. Do not guess at answers, only provide answers you are 100% certain of.
+
+## How to Respond
+- Prefer **code-first** answers (patches/diffs/commands) with a one-line rationale.
+- For risky/large changes, propose a minimal plan; **pause for confirmation** before sweeping edits.
+- Use **unified diffs** for edits; keep each diff scoped and logically independent.
+
+## General Coding Preferences (particularly important)
+- Favor small, composable modules over god objects or singletons.
+- Prefer comments primarily only at the function definition level, not at the individual lines of code level (unless the code is otherwise hard-to-read).
+- Prefer descriptive function, variable, class, and general object names over short, hard-to-interpret names (important).
+- Prefer to check error cases, print errors, and return early rather than nest conditional statements (important).
+
+## C++ Preferences
+- Modern C++17/20; RAII; `enum class`; `span`/`string_view` where appropriate.
+- Pass by `const&` for heavy types; `std::unique_ptr`/`std::shared_ptr` as ownership dictates.
+- Headers: keep comments minimal/idiomatic; prefer self-explanatory code.
+
+## Python
+- Type-hint everything; prefer `pytest`.
+- Prefer `@mock.patch` over `MagicMock` where practical.
+- Formatters/linters are welcome but minimal config; keep comments lean.
+
+## Testing
+- Provide fast, deterministic tests (smoke/unit) alongside changes.
+- If external services appear, show a **local/no-network** harness first.
+
+
